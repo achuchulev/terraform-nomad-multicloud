@@ -45,10 +45,12 @@ servers_count        = "nomad_servers_count"
 clients_count        = "nomad_clients_count"
 instance_role        = "client"
 nomad_aws_region1    = "nomad_aws_region1_name"
+nomad_aws_region1_dc = "nomad_aws_region1_dc_name"
 nomad_aws_region2    = "nomad_aws_region2_name"
+nomad_aws_region2_dc = "nomad_aws_region2_dc_name"
 nomad_gcp_region     = "nomad_gcp_region"
+nomad_gcp_region_dc  = "nomad_gcp_dc_name"
 authoritative_region = "name_of_the_nomad_authoritative_region"
-
 
 // ************ FRONTEND ************ //
 
