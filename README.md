@@ -112,6 +112,11 @@ terraform apply
   - check for certificate expiration and automatically renew Let’s Encrypt certificate
   - create Nomad federation cluster
   
+## To do
+
+ - configure Nomad frontend with LB
+ - expose public ip of LB only
+  
 ## Access Nomad
 
 #### via CLI
