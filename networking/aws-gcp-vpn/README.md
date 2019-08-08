@@ -12,8 +12,8 @@
 - Get the repo
 
 ```
-git clone https://github.com/achuchulev/terraform-aws-gcp-vpn.git
-cd terraform-aws-gcp-vpn
+git clone https://github.com/achuchulev/terraform-nomad-multicloud.git
+cd networking/aws-gcp-vpn
 ```
 
 - Create `terraform.tfvars` file
@@ -21,10 +21,7 @@ cd terraform-aws-gcp-vpn
 ```
 gcp_credentials_file_path = "/path/to/your/gcloud/credentials.json"
 aws_credentials_file_path = "/path/to/your/aws/credentials"
-aws-vpc-id = "your_vpc_id"
 gcp_project_id = "your_project_id"
-gcp-network-name = "gcp_vpc_network_name"
-gcp-subnet1-name = "gcp_vpc_subnet1_name"
 ```
 
 #### Inputs
@@ -34,11 +31,8 @@ gcp-subnet1-name = "gcp_vpc_subnet1_name"
 | gcp_credentials_file_path | Locate the GCP credentials .json file. | string  | - | yes
 | gcp_project_id | GCP Project ID. | string  | - | yes
 | gcp_region | GCP region | string  | yes | yes
-| gcp-network-name | VPC network name | string  | - | yes
-| gcp_subnet1_cidr | VPC subnet CIDR block | string  | yes | yes
 | aws_credentials_file_path | Locate the AWS credentials file | string  | - | yes
 | aws_region | AWS region | string  | yes | yes
-| aws-vpc-id | AWS VPC id | string  | - | yes
 | GCP_TUN1_VPN_GW_ASN | Tunnel 1 - Virtual Private Gateway ASN | number  | yes | yes
 | GCP_TUN1_CUSTOMER_GW_INSIDE_NETWORK_CIDR | Tunnel 1 - Customer Gateway from Inside IP Address CIDR block | number  | yes | yes
 | GCP_TUN2_VPN_GW_ASN | Tunnel 2 - Virtual Private Gateway ASN | number  | yes | yes
