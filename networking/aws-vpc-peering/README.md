@@ -11,8 +11,8 @@
 ### Clone the repo
 
 ```
-git clone https://github.com/achuchulev/terraform-aws-inter-vpc-peering.git
-cd terraform-aws-inter-vpc-peering
+git clone https://github.com/achuchulev/terraform-nomad-multicloud.git
+cd networking/aws-vpc-peering
 ```
 
 ### Create `terraform.tfvars` file
