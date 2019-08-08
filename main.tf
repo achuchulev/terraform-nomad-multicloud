@@ -62,7 +62,7 @@ module "aws-region1-nomad_server" {
   aws_vpc_id           = data.terraform_remote_state.aws_vpc_peering.outputs.requester_vpc_id        #var.vpc_id
   availability_zone    = data.terraform_remote_state.aws_vpc_peering.outputs.requester_azs[0]        #var.availability_zone
   subnet_id            = data.terraform_remote_state.aws_vpc_peering.outputs.requester_subnet_ids[0] #var.subnet_id
-  dc                   = var.datacenter
+  dc                   = var.nomad_aws_region1_dc
   ami                  = var.server_ami
   instance_type        = var.instance_type
   public_key           = var.public_key
@@ -79,12 +79,12 @@ module "aws-region2-nomad_server" {
   source = "./modules/aws/nomad_instance"
 
   region               = var.region2
-  aws_vpc_id           = data.terraform_remote_state.aws_vpc_peering.outputs.accepter_vpc_id        #var.region2_vpc_id
-  availability_zone    = data.terraform_remote_state.aws_vpc_peering.outputs.accepter_azs[0]        #var.region2_availability_zone
-  subnet_id            = data.terraform_remote_state.aws_vpc_peering.outputs.accepter_subnet_ids[0] #var.region2_subnet_id
+  aws_vpc_id           = data.terraform_remote_state.aws_vpc_peering.outputs.accepter_vpc_id
+  availability_zone    = data.terraform_remote_state.aws_vpc_peering.outputs.accepter_azs[0]
+  subnet_id            = data.terraform_remote_state.aws_vpc_peering.outputs.accepter_subnet_ids[0]
   nomad_region         = var.nomad_aws_region2
   ami                  = var.region2_server_ami
-  dc                   = var.datacenter
+  dc                   = var.nomad_aws_region2_dc
   authoritative_region = var.authoritative_region
   nomad_instance_count = var.servers_count
   access_key           = var.access_key
@@ -103,10 +103,10 @@ module "aws-region1-nomad_client" {
 
   region               = var.region
   nomad_region         = var.nomad_aws_region1
-  aws_vpc_id           = data.terraform_remote_state.aws_vpc_peering.outputs.requester_vpc_id        #var.vpc_id
-  availability_zone    = data.terraform_remote_state.aws_vpc_peering.outputs.requester_azs[0]        #var.availability_zone
-  subnet_id            = data.terraform_remote_state.aws_vpc_peering.outputs.requester_subnet_ids[0] #var.subnet_id
-  dc                   = var.datacenter
+  aws_vpc_id           = data.terraform_remote_state.aws_vpc_peering.outputs.requester_vpc_id
+  availability_zone    = data.terraform_remote_state.aws_vpc_peering.outputs.requester_azs[0]
+  subnet_id            = data.terraform_remote_state.aws_vpc_peering.outputs.requester_subnet_ids[0]
+  dc                   = var.nomad_aws_region1_dc
   instance_role        = var.instance_role
   ami                  = var.client_ami
   nomad_instance_count = var.clients_count
@@ -125,10 +125,10 @@ module "aws-region2-nomad_client" {
   source = "./modules/aws/nomad_instance"
 
   region               = var.region2
-  aws_vpc_id           = data.terraform_remote_state.aws_vpc_peering.outputs.accepter_vpc_id        #var.region2_vpc_id
-  availability_zone    = data.terraform_remote_state.aws_vpc_peering.outputs.accepter_azs[0]        #var.region2_availability_zone
-  subnet_id            = data.terraform_remote_state.aws_vpc_peering.outputs.accepter_subnet_ids[0] #var.region2_subnet_id
-  dc                   = var.datacenter
+  aws_vpc_id           = data.terraform_remote_state.aws_vpc_peering.outputs.accepter_vpc_id
+  availability_zone    = data.terraform_remote_state.aws_vpc_peering.outputs.accepter_azs[0]
+  subnet_id            = data.terraform_remote_state.aws_vpc_peering.outputs.accepter_subnet_ids[0]
+  dc                   = var.nomad_aws_region1_dc
   ami                  = var.region2_client_ami
   nomad_region         = var.nomad_aws_region2
   instance_role        = var.instance_role
@@ -147,9 +147,9 @@ module "nomad_frontend" {
   source = "./modules/nomad_frontend"
 
   region              = var.region
-  aws_vpc_id          = data.terraform_remote_state.aws_vpc_peering.outputs.requester_vpc_id        #var.vpc_id
-  availability_zone   = data.terraform_remote_state.aws_vpc_peering.outputs.requester_azs[0]        #var.availability_zone
-  subnet_id           = data.terraform_remote_state.aws_vpc_peering.outputs.requester_subnet_ids[0] #var.subnet_id
+  aws_vpc_id          = data.terraform_remote_state.aws_vpc_peering.outputs.requester_vpc_id
+  availability_zone   = data.terraform_remote_state.aws_vpc_peering.outputs.requester_azs[0]
+  subnet_id           = data.terraform_remote_state.aws_vpc_peering.outputs.requester_subnet_ids[0]
   frontend_region     = var.nomad_aws_region1
   access_key          = var.access_key
   secret_key          = var.secret_key
@@ -174,7 +174,7 @@ module "gcp-nomad_server" {
   gcp_region                = var.gcp_region
   nomad_instance_count      = var.servers_count
   gcp_disk_image            = var.gcp_disk_image
-  dc                        = var.datacenter
+  dc                        = var.nomad_gcp_region_dc
   nomad_region              = var.nomad_gcp_region
   authoritative_region      = var.authoritative_region
   gcp_instance_type         = var.gcp_instance_type
@@ -192,7 +192,7 @@ module "gcp-nomad_client" {
   gcp_project_id            = var.gcp_project_id
   gcp_credentials_file_path = var.gcp_credentials_file_path
   gcp_region                = var.gcp_region
-  dc                        = var.datacenter
+  dc                        = var.nomad_gcp_region_dc
   nomad_region              = var.nomad_gcp_region
   instance_role             = var.instance_role
   nomad_instance_count      = var.clients_count
