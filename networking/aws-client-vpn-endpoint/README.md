@@ -11,8 +11,8 @@
 ### Clone the repo
 
 ```
-git clone https://github.com/achuchulev/terraform-aws-client-vpn-endpoint.git
-cd terraform-aws-client-vpn-endpoint
+git clone https://github.com/achuchulev/terraform-nomad-multicloud.git
+cd networking/aws-client-vpn-endpoint
 ```
 
 ### Create `terraform.tfvars` file
@@ -21,10 +21,9 @@ cd terraform-aws-client-vpn-endpoint
 
 | Name  |	Description |	Type |  Default |	Required
 | ----- | ----------- | ---- |  ------- | --------
-| aws_access_key   | AWS access key | string  | -   | yes
-| aws_secret_key   | AWS secret key | string  | -   | yes
-| aws_region       | AWS region     | string  | yes | yes
-| subnet-id   | AWS VPC subnet id | string  | -   | yes
+| aws_access_key | AWS access key | string  | -   | yes
+| aws_secret_key | AWS secret key | string  | -   | yes
+| aws_region | AWS region     | string  | yes | yes
 | cert_dir | Some certificate directory name     | string  | yes | no
 | domain | Some domain name     | string  | yes | no
 
