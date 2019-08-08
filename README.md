@@ -1,4 +1,4 @@
-# Run prod Nomad cluster on AWS with terraform in single DC and in single nomad region. A kitchen test is included
+# Terraform configuration to deploy Nomad multicloud (AWS & GCP) federation cluster in different Nomad regions & DCs secured with mTLS and frontend with nginx reverse proxy. A kitchen test is included
 
 ## High Level Overview
 
@@ -7,65 +7,78 @@
 ## Prerequisites
 
 - git
-- terraform (0.11.14)
+- terraform (>=0.12)
 - own or control registered domain name for the certificate 
 - have a DNS record that associates your domain name and your server’s public IP address
 - Cloudflare subscription as it is used to manage DNS records automatically
 - AWS subscription
+- GCP subscription
 - ssh key
 - Use pre-built nomad server,client and frontend AWS AMIs on `us-east-2` region or bake your own using [Packer](https://www.packer.io)
 
-## How to run
+## How to deploy
 
 - Get the repo
 
 ```
-git clone https://github.com/achuchulev/terraform-aws-nomad-1dc-1region.git
-cd terraform-aws-nomad-1dc-1region
+git clone https://github.com/achuchulev/terraform-nomad-multicloud.git
+cd terraform-nomad-multicloud
 ```
+
+### Deploy networking infrastructure
+
+- Create
+  - 2 VPCs on AWS and a Peering conncetion inbetween with module [aws-vpc-peering](https://github.com/achuchulev/terraform-nomad-multicloud/networking/aws-vpc-peering)
+  - 1 VPC on GCP with module [gcp-vpc](https://github.com/achuchulev/terraform-nomad-multicloud/networking/gcp-vpc)
+  - VPN between AWS VPC 1 and GCP VPC with module [aws-gcp-vpn](https://github.com/achuchulev/terraform-nomad-multicloud/networking/aws-gcp-vpn)
+  - Client VPN endpoint to AWS VPC 1 with module [aws-client-vpn-endpoint](https://github.com/achuchulev/terraform-nomad-multicloud/networking/aws-client-vpn-endpoint)
+  
+### Deploy Nomad infrastructure
 
 - Create `terraform.tfvars` file
 
 ```
-# AWS vars
-access_key = "your_aws_access_key"
-secret_key = "your_aws_secret_key"
-ami = "ami-0e431df20c101e6b7" # Ubuntu Xenial Nomad CLIENT AMI # dc1 us-east-2
-instance_type = "ec2-instance-instance-type"
-public_key = "your_public_ssh_key"
-region = "aws-region"
-availability_zone = "aws-availability-zone"
-subnet_id = "subnet_id"
-vpc_security_group_ids = ["security-group/s-id/s"]
-
-# Cloudflare vars
-cloudflare_email = "you@email.com"
-cloudflare_token = "your-cloudflare-token"
-cloudflare_zone = "your.domain" # example: nomadlab.com
-subdomain_name = "subdomain_name" # example: lab
+// ************ GLOBAL ************ //
 
 # Nomad vars
-servers_count = "number-of-nomad-server" # defaults to 3
-clients_count = "number-of-nomad-clients" # defaults to 3
-instance_role = "client" # used by client module
-datacenter = "some-nomad-dc" # specifies nomad dc
-nomad_region = "some-nomad-region" # specifies nomad region
-```
+servers_count        = "nomad_servers_count"
+clients_count        = "nomad_clients_count"
+instance_role        = "client"
+nomad_aws_region1    = "nomad_aws_region1_name"
+nomad_aws_region2    = "nomad_aws_region2_name"
+nomad_gcp_region     = "nomad_gcp_region"
+authoritative_region = "name_of_the_nomad_authoritative_region"
 
+// ************ FRONTEND ************ //
 
-```
-Note: Security group in AWS should allow inbound traffic on ports:
-      
-      TCP 443 (https)
-      TCP 4646-4648 (Nomad)
-      UDP 4648 (Nomad)
-      
+# Cloudflare vars
+cloudflare_email = "someone@example.net"
+cloudflare_token = "your_cloudflare_token"
+cloudflare_zone  = "example.net"
+subdomain_name   = "nomad-multicloud"
 
-      Following immutable infrastructure concept the following AMIs are used:
-      
-      Nomad client:    ami-0e431df20c101e6b7 ( Ubuntu Xenial with nomad )
-      Nomad server:    ami-0e2aa4ea219d7657e ( Ubuntu Xenial with nomad )
-      Frontend server: ami-0352bc96e72c69d2d ( Ubuntu Xenial with nginx )
+// ************ GCP ************ //
+
+gcp_credentials_file_path = "/path/to/your/gcloud/credentials.json"
+gcp_project_id            = "your_gcp_project_name"
+
+// ************ AWS ************ //
+
+### vars AWS global
+access_key = "your_aws_access_key"
+secret_key = "your_aws_secret_key"
+public_key    = "your_public_ssh_key"
+instance_type = "ec2_instance_type"
+
+### vars AWS region 1
+region     = "us-east-1"
+server_ami = "ami-0ac8c1373dae0f3e5"
+client_ami = "ami-02ffa51d963317aaf"
+
+### vars AWS region 2
+region2            = "us-east-2"
+region2_server_ami = "ami-0e2aa4ea219d7657e"
+region2_client_ami = "ami-0e431df20c101e6b7"
 ```
 
 - Initialize terraform
@@ -82,17 +95,17 @@ terraform apply
 ```
 
 - `Terraform apply` will:
-  - create new instances on AWS for server/client/frontend
+  - create new instances on AWS Region 1 for server/client/frontend
+  - create new instances on AWS Region 2 for server/client
+  - create new instances on GCP for server/client
   - copy nomad and nginx configuration files
   - install nomad
   - install cfssl (Cloudflare's PKI and TLS toolkit)
-  - generate the selfsigned certificates for Nomad cluster 
-  - install nginx
+  - generate selfsigned certificates for Nomad cluster 
   - configure nginx reverse proxy
-  - install certbot
-  - automatically enable HTTPS on website with EFF's Certbot, deploying Let's Encrypt certificate
+  - automatically enable HTTPS for Nomad frontend with EFF's Certbot, deploying Let's Encrypt certificate
   - check for certificate expiration and automatically renew Let’s Encrypt certificate
-  - start nomad server and client
+  - create Nomad federation cluster
   
 ## Access Nomad
 
