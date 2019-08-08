@@ -11,8 +11,8 @@
 - Get the repo
 
 ```
-git clone https://github.com/achuchulev/terraform-gcp-vpc.git
-cd terraform-gcp-vpc
+git clone https://github.com/achuchulev/terraform-nomad-multicloud.git
+cd networking/gcp-vpc
 ```
 
 - Create `terraform.tfvars` file
