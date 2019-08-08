@@ -61,6 +61,10 @@ terraform apply
 | ----- | ----------- 
 | requester_vpc_id | Requester VPC id
 | accepter_vpc_id | Accepter VPC id
+| requester_azs | Requester VPC Availability Zone names
+| accepter_azs | Accepter VPC Availability Zone names
+| requester_subnet_ids | Requester VPC Subnet ids
+| accepter_subnet_ids | Accepter VPC Subnet ids
 | requester_vpc_name | Requester VPC name
 | accepter_vpc_name | Accepter VPC name
 | peering_connection_id | Peering connection id
