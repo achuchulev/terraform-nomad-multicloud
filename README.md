@@ -49,6 +49,7 @@ nomad_aws_region2    = "nomad_aws_region2_name"
 nomad_gcp_region     = "nomad_gcp_region"
 authoritative_region = "name_of_the_nomad_authoritative_region"
 
+
 // ************ FRONTEND ************ //
 
 # Cloudflare vars
@@ -57,10 +58,12 @@ cloudflare_token = "your_cloudflare_token"
 cloudflare_zone  = "example.net"
 subdomain_name   = "nomad-multicloud"
 
+
 // ************ GCP ************ //
 
 gcp_credentials_file_path = "/path/to/your/gcloud/credentials.json"
 gcp_project_id            = "your_gcp_project_name"
+
 
 // ************ AWS ************ //
 
