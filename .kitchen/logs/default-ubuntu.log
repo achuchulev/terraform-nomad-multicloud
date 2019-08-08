@@ -1,0 +1,141 @@
+I, [2019-06-21T16:49:30.935414 #731]  INFO -- default-ubuntu: -----> Cleaning up any prior instances of <default-ubuntu>
+I, [2019-06-21T16:49:30.936212 #731]  INFO -- default-ubuntu: -----> Destroying <default-ubuntu>...
+W, [2019-06-21T16:49:30.936756 #731]  WARN -- default-ubuntu: Running command `terraform init -input=false -lock=true -lock-timeout=0s  -force-copy -backend=true  -get=true -get-plugins=true  -verify-plugins=true /Users/achuchulev/Downloads/terraform-aws-nomad-1dc-1region`
+I, [2019-06-21T16:49:30.976234 #731]  INFO -- default-ubuntu: [0m[1mInitializing modules...[0m
+I, [2019-06-21T16:49:30.977032 #731]  INFO -- default-ubuntu: - module.nomad_server
+I, [2019-06-21T16:49:30.981980 #731]  INFO -- default-ubuntu: - module.nomad_client
+I, [2019-06-21T16:49:30.985286 #731]  INFO -- default-ubuntu: - module.nomad_frontend
+I, [2019-06-21T16:49:30.990519 #731]  INFO -- default-ubuntu: - module.nomad_server.random_name
+I, [2019-06-21T16:49:30.992456 #731]  INFO -- default-ubuntu: - module.nomad_client.random_name
+I, [2019-06-21T16:49:30.992507 #731]  INFO -- default-ubuntu: - module.nomad_frontend.random_name
+I, [2019-06-21T16:49:31.005700 #731]  INFO -- default-ubuntu: 
+I, [2019-06-21T16:49:31.005883 #731]  INFO -- default-ubuntu: [0m[1mInitializing provider plugins...[0m
+I, [2019-06-21T16:49:31.593347 #731]  INFO -- default-ubuntu: 
+I, [2019-06-21T16:49:31.593475 #731]  INFO -- default-ubuntu: The following providers do not have any version constraints in configuration,
+I, [2019-06-21T16:49:31.593632 #731]  INFO -- default-ubuntu: so the latest version was installed.
+I, [2019-06-21T16:49:31.593664 #731]  INFO -- default-ubuntu: 
+I, [2019-06-21T16:49:31.593692 #731]  INFO -- default-ubuntu: To prevent automatic upgrades to new major versions that may contain breaking
+I, [2019-06-21T16:49:31.593784 #731]  INFO -- default-ubuntu: changes, it is recommended to add version = "..." constraints to the
+I, [2019-06-21T16:49:31.593813 #731]  INFO -- default-ubuntu: corresponding provider blocks in configuration, with the constraint strings
+I, [2019-06-21T16:49:31.593888 #731]  INFO -- default-ubuntu: suggested below.
+I, [2019-06-21T16:49:31.593916 #731]  INFO -- default-ubuntu: 
+I, [2019-06-21T16:49:31.593984 #731]  INFO -- default-ubuntu: * provider.cloudflare: version = "~> 1.15"
+I, [2019-06-21T16:49:31.594156 #731]  INFO -- default-ubuntu: * provider.null: version = "~> 2.1"
+I, [2019-06-21T16:49:31.594408 #731]  INFO -- default-ubuntu: * provider.random: version = "~> 2.1"
+I, [2019-06-21T16:49:31.594479 #731]  INFO -- default-ubuntu: 
+I, [2019-06-21T16:49:31.594745 #731]  INFO -- default-ubuntu: [0m[1m[32mTerraform has been successfully initialized![0m[32m[0m
+W, [2019-06-21T16:49:31.608076 #731]  WARN -- default-ubuntu: Running command `terraform workspace select kitchen-terraform-default-ubuntu`
+W, [2019-06-21T16:49:31.660682 #731]  WARN -- default-ubuntu: Running command `terraform destroy -force -lock=true -lock-timeout=0s -input=false  -parallelism=10 -refresh=true  -var-file=/Users/achuchulev/Downloads/terraform-aws-nomad-1dc-1region/terraform.tfvars.dc1 /Users/achuchulev/Downloads/terraform-aws-nomad-1dc-1region`
+I, [2019-06-21T16:49:35.180528 #731]  INFO -- default-ubuntu: [0m[1mdata.aws_iam_policy_document.nomad: Refreshing state...[0m
+I, [2019-06-21T16:49:35.180920 #731]  INFO -- default-ubuntu: [0m[1mdata.aws_iam_policy_document.assume_role: Refreshing state...[0m
+I, [2019-06-21T16:49:35.181007 #731]  INFO -- default-ubuntu: [0m[1mdata.aws_iam_policy_document.nomad: Refreshing state...[0m
+I, [2019-06-21T16:49:35.181399 #731]  INFO -- default-ubuntu: [0m[1mdata.aws_iam_policy_document.assume_role: Refreshing state...[0m
+I, [2019-06-21T16:49:37.353821 #731]  INFO -- default-ubuntu: [31m
+I, [2019-06-21T16:49:37.353914 #731]  INFO -- default-ubuntu: [1m[31mError: [0m[0m[1mError applying plan:
+I, [2019-06-21T16:49:37.356808 #731]  INFO -- default-ubuntu: 
+I, [2019-06-21T16:49:37.356881 #731]  INFO -- default-ubuntu: 1 error occurred:
+I, [2019-06-21T16:49:37.356909 #731]  INFO -- default-ubuntu: 	* module.nomad_frontend.output.public_ip: variable "nginx_instance" is nil, but no error was reported
+I, [2019-06-21T16:49:37.356954 #731]  INFO -- default-ubuntu: 
+I, [2019-06-21T16:49:37.360925 #731]  INFO -- default-ubuntu: 
+I, [2019-06-21T16:49:37.361010 #731]  INFO -- default-ubuntu: 
+I, [2019-06-21T16:49:37.361042 #731]  INFO -- default-ubuntu: Terraform does not automatically rollback in the face of errors.
+I, [2019-06-21T16:49:37.361071 #731]  INFO -- default-ubuntu: Instead, your Terraform state file has been partially updated with
+I, [2019-06-21T16:49:37.362941 #731]  INFO -- default-ubuntu: any resources that successfully completed. Please address the error
+I, [2019-06-21T16:49:37.363011 #731]  INFO -- default-ubuntu: above and apply again to incrementally change your infrastructure.[0m
+I, [2019-06-21T16:49:37.363047 #731]  INFO -- default-ubuntu: 
+I, [2019-06-21T16:49:37.363072 #731]  INFO -- default-ubuntu: [0m[0m[0m
+E, [2019-06-21T16:49:37.380834 #731] ERROR -- default-ubuntu: Destroy failed on instance <default-ubuntu>.
+E, [2019-06-21T16:49:37.381104 #731] ERROR -- default-ubuntu: ------Exception-------
+E, [2019-06-21T16:49:37.381141 #731] ERROR -- default-ubuntu: Class: Kitchen::ActionFailed
+E, [2019-06-21T16:49:37.381162 #731] ERROR -- default-ubuntu: Message: Running command resulted in failure: Expected process to exit with [0], but received '1'
+---- Begin output of terraform destroy -force -lock=true -lock-timeout=0s -input=false  -parallelism=10 -refresh=true  -var-file=/Users/achuchulev/Downloads/terraform-aws-nomad-1dc-1region/terraform.tfvars.dc1 /Users/achuchulev/Downloads/terraform-aws-nomad-1dc-1region ----
+STDOUT: [0m[1mdata.aws_iam_policy_document.nomad: Refreshing state...[0m
+[0m[1mdata.aws_iam_policy_document.assume_role: Refreshing state...[0m
+[0m[1mdata.aws_iam_policy_document.nomad: Refreshing state...[0m
+[0m[1mdata.aws_iam_policy_document.assume_role: Refreshing state...[0m
+STDERR: [31m
+[1m[31mError: [0m[0m[1mError applying plan:
+
+1 error occurred:
+	* module.nomad_frontend.output.public_ip: variable "nginx_instance" is nil, but no error was reported
+
+
+
+Terraform does not automatically rollback in the face of errors.
+Instead, your Terraform state file has been partially updated with
+any resources that successfully completed. Please address the error
+above and apply again to incrementally change your infrastructure.[0m
+
+[0m[0m[0m
+---- End output of terraform destroy -force -lock=true -lock-timeout=0s -input=false  -parallelism=10 -refresh=true  -var-file=/Users/achuchulev/Downloads/terraform-aws-nomad-1dc-1region/terraform.tfvars.dc1 /Users/achuchulev/Downloads/terraform-aws-nomad-1dc-1region ----
+Ran terraform destroy -force -lock=true -lock-timeout=0s -input=false  -parallelism=10 -refresh=true  -var-file=/Users/achuchulev/Downloads/terraform-aws-nomad-1dc-1region/terraform.tfvars.dc1 /Users/achuchulev/Downloads/terraform-aws-nomad-1dc-1region returned 1
+E, [2019-06-21T16:49:37.381216 #731] ERROR -- default-ubuntu: ----------------------
+E, [2019-06-21T16:49:37.381244 #731] ERROR -- default-ubuntu: ------Backtrace-------
+E, [2019-06-21T16:49:37.381264 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/kitchen-terraform-3.3.1/lib/kitchen/driver/terraform.rb:283:in `rescue in destroy'
+E, [2019-06-21T16:49:37.381290 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/kitchen-terraform-3.3.1/lib/kitchen/driver/terraform.rb:277:in `destroy'
+E, [2019-06-21T16:49:37.381309 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/test-kitchen-1.21.2/lib/kitchen/instance.rb:469:in `public_send'
+E, [2019-06-21T16:49:37.381331 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/test-kitchen-1.21.2/lib/kitchen/instance.rb:469:in `block in perform_action'
+E, [2019-06-21T16:49:37.381346 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/test-kitchen-1.21.2/lib/kitchen/instance.rb:536:in `synchronize_or_call'
+E, [2019-06-21T16:49:37.381386 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/test-kitchen-1.21.2/lib/kitchen/instance.rb:498:in `block in action'
+E, [2019-06-21T16:49:37.381405 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/2.3.0/benchmark.rb:293:in `measure'
+E, [2019-06-21T16:49:37.381422 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/test-kitchen-1.21.2/lib/kitchen/instance.rb:497:in `action'
+E, [2019-06-21T16:49:37.381439 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/test-kitchen-1.21.2/lib/kitchen/instance.rb:469:in `perform_action'
+E, [2019-06-21T16:49:37.381458 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/test-kitchen-1.21.2/lib/kitchen/instance.rb:456:in `destroy_action'
+E, [2019-06-21T16:49:37.381478 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/test-kitchen-1.21.2/lib/kitchen/instance.rb:368:in `block in transition_to'
+E, [2019-06-21T16:49:37.381497 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/test-kitchen-1.21.2/lib/kitchen/instance.rb:367:in `each'
+E, [2019-06-21T16:49:37.381514 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/test-kitchen-1.21.2/lib/kitchen/instance.rb:367:in `transition_to'
+E, [2019-06-21T16:49:37.381533 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/test-kitchen-1.21.2/lib/kitchen/instance.rb:168:in `destroy'
+E, [2019-06-21T16:49:37.381569 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/test-kitchen-1.21.2/lib/kitchen/instance.rb:184:in `block in test'
+E, [2019-06-21T16:49:37.381589 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/2.3.0/benchmark.rb:293:in `measure'
+E, [2019-06-21T16:49:37.381606 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/test-kitchen-1.21.2/lib/kitchen/instance.rb:182:in `test'
+E, [2019-06-21T16:49:37.381625 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/test-kitchen-1.21.2/lib/kitchen/command.rb:197:in `public_send'
+E, [2019-06-21T16:49:37.381644 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/test-kitchen-1.21.2/lib/kitchen/command.rb:197:in `run_action_in_thread'
+E, [2019-06-21T16:49:37.381655 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/test-kitchen-1.21.2/lib/kitchen/command.rb:169:in `block (2 levels) in run_action'
+E, [2019-06-21T16:49:37.381665 #731] ERROR -- default-ubuntu: ----End Backtrace-----
+E, [2019-06-21T16:49:37.381674 #731] ERROR -- default-ubuntu: ---Nested Exception---
+E, [2019-06-21T16:49:37.381683 #731] ERROR -- default-ubuntu: Class: Kitchen::Terraform::Error
+E, [2019-06-21T16:49:37.381693 #731] ERROR -- default-ubuntu: Message: Running command resulted in failure: Expected process to exit with [0], but received '1'
+---- Begin output of terraform destroy -force -lock=true -lock-timeout=0s -input=false  -parallelism=10 -refresh=true  -var-file=/Users/achuchulev/Downloads/terraform-aws-nomad-1dc-1region/terraform.tfvars.dc1 /Users/achuchulev/Downloads/terraform-aws-nomad-1dc-1region ----
+STDOUT: [0m[1mdata.aws_iam_policy_document.nomad: Refreshing state...[0m
+[0m[1mdata.aws_iam_policy_document.assume_role: Refreshing state...[0m
+[0m[1mdata.aws_iam_policy_document.nomad: Refreshing state...[0m
+[0m[1mdata.aws_iam_policy_document.assume_role: Refreshing state...[0m
+STDERR: [31m
+[1m[31mError: [0m[0m[1mError applying plan:
+
+1 error occurred:
+	* module.nomad_frontend.output.public_ip: variable "nginx_instance" is nil, but no error was reported
+
+
+
+Terraform does not automatically rollback in the face of errors.
+Instead, your Terraform state file has been partially updated with
+any resources that successfully completed. Please address the error
+above and apply again to incrementally change your infrastructure.[0m
+
+[0m[0m[0m
+---- End output of terraform destroy -force -lock=true -lock-timeout=0s -input=false  -parallelism=10 -refresh=true  -var-file=/Users/achuchulev/Downloads/terraform-aws-nomad-1dc-1region/terraform.tfvars.dc1 /Users/achuchulev/Downloads/terraform-aws-nomad-1dc-1region ----
+Ran terraform destroy -force -lock=true -lock-timeout=0s -input=false  -parallelism=10 -refresh=true  -var-file=/Users/achuchulev/Downloads/terraform-aws-nomad-1dc-1region/terraform.tfvars.dc1 /Users/achuchulev/Downloads/terraform-aws-nomad-1dc-1region returned 1
+E, [2019-06-21T16:49:37.381720 #731] ERROR -- default-ubuntu: ----------------------
+E, [2019-06-21T16:49:37.381730 #731] ERROR -- default-ubuntu: ------Backtrace-------
+E, [2019-06-21T16:49:37.381740 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/kitchen-terraform-3.3.1/lib/kitchen/driver/terraform.rb:283:in `rescue in destroy'
+E, [2019-06-21T16:49:37.381749 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/kitchen-terraform-3.3.1/lib/kitchen/driver/terraform.rb:277:in `destroy'
+E, [2019-06-21T16:49:37.381759 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/test-kitchen-1.21.2/lib/kitchen/instance.rb:469:in `public_send'
+E, [2019-06-21T16:49:37.381826 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/test-kitchen-1.21.2/lib/kitchen/instance.rb:469:in `block in perform_action'
+E, [2019-06-21T16:49:37.381837 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/test-kitchen-1.21.2/lib/kitchen/instance.rb:536:in `synchronize_or_call'
+E, [2019-06-21T16:49:37.381847 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/test-kitchen-1.21.2/lib/kitchen/instance.rb:498:in `block in action'
+E, [2019-06-21T16:49:37.381857 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/2.3.0/benchmark.rb:293:in `measure'
+E, [2019-06-21T16:49:37.381866 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/test-kitchen-1.21.2/lib/kitchen/instance.rb:497:in `action'
+E, [2019-06-21T16:49:37.381875 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/test-kitchen-1.21.2/lib/kitchen/instance.rb:469:in `perform_action'
+E, [2019-06-21T16:49:37.381885 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/test-kitchen-1.21.2/lib/kitchen/instance.rb:456:in `destroy_action'
+E, [2019-06-21T16:49:37.381894 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/test-kitchen-1.21.2/lib/kitchen/instance.rb:368:in `block in transition_to'
+E, [2019-06-21T16:49:37.381905 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/test-kitchen-1.21.2/lib/kitchen/instance.rb:367:in `each'
+E, [2019-06-21T16:49:37.381915 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/test-kitchen-1.21.2/lib/kitchen/instance.rb:367:in `transition_to'
+E, [2019-06-21T16:49:37.381926 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/test-kitchen-1.21.2/lib/kitchen/instance.rb:168:in `destroy'
+E, [2019-06-21T16:49:37.381939 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/test-kitchen-1.21.2/lib/kitchen/instance.rb:184:in `block in test'
+E, [2019-06-21T16:49:37.381951 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/2.3.0/benchmark.rb:293:in `measure'
+E, [2019-06-21T16:49:37.381962 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/test-kitchen-1.21.2/lib/kitchen/instance.rb:182:in `test'
+E, [2019-06-21T16:49:37.381983 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/test-kitchen-1.21.2/lib/kitchen/command.rb:197:in `public_send'
+E, [2019-06-21T16:49:37.381994 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/test-kitchen-1.21.2/lib/kitchen/command.rb:197:in `run_action_in_thread'
+E, [2019-06-21T16:49:37.382004 #731] ERROR -- default-ubuntu: /Users/achuchulev/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/test-kitchen-1.21.2/lib/kitchen/command.rb:169:in `block (2 levels) in run_action'
+E, [2019-06-21T16:49:37.382018 #731] ERROR -- default-ubuntu: ----End Backtrace-----

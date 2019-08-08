@@ -7,3 +7,11 @@
 
 # .tfvars files
 *.tfvars
+
+ssl/*
+
+# Exclude easy-rsa tool folder
+**/easy-rsa/*
+
+# exclude client vpn endpoint configuration file
+client-config.ovpn
