@@ -14,7 +14,7 @@
 - AWS subscription
 - GCP subscription
 - ssh key
-- Use pre-built nomad server,client and frontend AWS AMIs on `us-east-2` region or bake your own using [Packer](https://www.packer.io)
+- Use pre-built nomad server,client and frontend AWS AMIs and GCP Images or bake your own using [Packer](https://www.packer.io)
 
 ## How to deploy
 
