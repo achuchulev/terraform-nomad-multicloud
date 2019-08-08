@@ -28,10 +28,10 @@ cd terraform-nomad-multicloud
 ### Deploy networking infrastructure
 
 - Create
-  - 2 VPCs on AWS and a Peering conncetion inbetween with module [aws-vpc-peering](https://github.com/achuchulev/terraform-nomad-multicloud/networking/aws-vpc-peering)
-  - 1 VPC on GCP with module [gcp-vpc](https://github.com/achuchulev/terraform-nomad-multicloud/networking/gcp-vpc)
-  - VPN between AWS VPC 1 and GCP VPC with module [aws-gcp-vpn](https://github.com/achuchulev/terraform-nomad-multicloud/networking/aws-gcp-vpn)
-  - Client VPN endpoint to AWS VPC 1 with module [aws-client-vpn-endpoint](https://github.com/achuchulev/terraform-nomad-multicloud/networking/aws-client-vpn-endpoint)
+  - 2 VPCs on AWS and a Peering conncetion inbetween with module [aws-vpc-peering](https://github.com/achuchulev/terraform-nomad-multicloud/tree/master/networking/aws-vpc-peering)
+  - 1 VPC on GCP with module [gcp-vpc](https://github.com/achuchulev/terraform-nomad-multicloud/tree/master/networking/gcp-vpc)
+  - VPN between AWS VPC 1 and GCP VPC with module [aws-gcp-vpn](https://github.com/achuchulev/terraform-nomad-multicloud/tree/master/networking/aws-gcp-vpn)
+  - Client VPN endpoint to AWS VPC 1 with module [aws-client-vpn-endpoint](https://github.com/achuchulev/terraform-nomad-multicloud/tree/master/networking/aws-client-vpn-endpoint)
   
 ### Deploy Nomad infrastructure
 
