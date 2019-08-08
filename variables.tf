@@ -14,16 +14,16 @@ variable "instance_role" {}
 
 // ************** Nomad VARS *************** //
 
-variable "datacenter" {
-  description = "The name of Nomad datacenter."
-  type        = string
-  default     = "dc1"
-}
-
 variable "nomad_aws_region1" {
   description = "The name of Nomad region."
   type        = string
   default     = "global"
+}
+
+variable "nomad_aws_region1_dc" {
+  description = "The name of Nomad datacenter."
+  type        = string
+  default     = "dc1"
 }
 
 variable "nomad_aws_region2" {
@@ -32,10 +32,22 @@ variable "nomad_aws_region2" {
   default     = "global"
 }
 
+variable "nomad_aws_region2_dc" {
+  description = "The name of Nomad datacenter."
+  type        = string
+  default     = "dc1"
+}
+
 variable "nomad_gcp_region" {
   description = "The name of Nomad region."
   type        = string
   default     = "global"
+}
+
+variable "nomad_gcp_region_dc" {
+  description = "The name of Nomad datacenter."
+  type        = string
+  default     = "dc1"
 }
 
 variable "authoritative_region" {
