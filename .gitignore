@@ -8,6 +8,10 @@
 # .tfvars files
 *.tfvars
 
+**/.kitchen
+
+**/.DS_Store
+
 ssl/*
 
 # Exclude easy-rsa tool folder
