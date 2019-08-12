@@ -59,9 +59,9 @@ module "aws-region1-nomad_server" {
   secret_key           = var.secret_key
   region               = var.region
   nomad_instance_count = var.servers_count
-  aws_vpc_id           = data.terraform_remote_state.aws_vpc_peering.outputs.requester_vpc_id        #var.vpc_id
-  availability_zone    = data.terraform_remote_state.aws_vpc_peering.outputs.requester_azs[0]        #var.availability_zone
-  subnet_id            = data.terraform_remote_state.aws_vpc_peering.outputs.requester_subnet_ids[0] #var.subnet_id
+  aws_vpc_id           = data.terraform_remote_state.aws_vpc_peering.outputs.requester_vpc_id
+  availability_zone    = data.terraform_remote_state.aws_vpc_peering.outputs.requester_azs[0]
+  subnet_id            = data.terraform_remote_state.aws_vpc_peering.outputs.requester_subnet_ids[0]
   dc                   = var.nomad_aws_region1_dc
   ami                  = var.server_ami
   instance_type        = var.instance_type
@@ -178,8 +178,8 @@ module "gcp-nomad_server" {
   nomad_region              = var.nomad_gcp_region
   authoritative_region      = var.authoritative_region
   gcp_instance_type         = var.gcp_instance_type
-  gcp-vpc-network           = data.terraform_remote_state.gcp_vpc.outputs.gcp_vpc_network_id        #var.gcp-vpc-network
-  gcp-subnet1-name          = data.terraform_remote_state.gcp_vpc.outputs.gcp_vpc_network_subnet_id #var.gcp-subnet1-name
+  gcp-vpc-network           = data.terraform_remote_state.gcp_vpc.outputs.gcp_vpc_network_id
+  gcp-subnet1-name          = data.terraform_remote_state.gcp_vpc.outputs.gcp_vpc_network_subnet_id
   domain_name               = var.subdomain_name
   zone_name                 = var.cloudflare_zone
   secure_gossip             = random_id.server_gossip.b64_std
@@ -198,8 +198,8 @@ module "gcp-nomad_client" {
   nomad_instance_count      = var.clients_count
   gcp_disk_image            = var.gcp_client_disk_image
   gcp_instance_type         = var.gcp_instance_type
-  gcp-vpc-network           = data.terraform_remote_state.gcp_vpc.outputs.gcp_vpc_network_id        #var.gcp-vpc-network
-  gcp-subnet1-name          = data.terraform_remote_state.gcp_vpc.outputs.gcp_vpc_network_subnet_id #var.gcp-subnet1-name
+  gcp-vpc-network           = data.terraform_remote_state.gcp_vpc.outputs.gcp_vpc_network_id
+  gcp-subnet1-name          = data.terraform_remote_state.gcp_vpc.outputs.gcp_vpc_network_subnet_id
   domain_name               = var.subdomain_name
   zone_name                 = var.cloudflare_zone
 }
