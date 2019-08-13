@@ -19,20 +19,12 @@ resource "aws_acm_certificate" "client_cert" {
   private_key       = file("easy-rsa/${var.cert_dir}/client1.${var.domain}.key")
   certificate_body  = file("easy-rsa/${var.cert_dir}/client1.${var.domain}.crt")
   certificate_chain = file("easy-rsa/${var.cert_dir}/ca.crt")
-
-  lifecycle {
-    prevent_destroy = true
-  }
 }
 
 resource "aws_acm_certificate" "server_cert" {
   private_key       = file("easy-rsa/${var.cert_dir}/server.key")
   certificate_body  = file("easy-rsa/${var.cert_dir}/server.crt")
   certificate_chain = file("easy-rsa/${var.cert_dir}/ca.crt")
-
-  lifecycle {
-    prevent_destroy = true
-  }
 }
 
 resource "aws_ec2_client_vpn_endpoint" "client-vpn-endpoint" {
