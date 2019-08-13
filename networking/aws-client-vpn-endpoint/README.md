@@ -1,4 +1,4 @@
-# Sample terraform code to create Client VPN Endpoint on AWS
+# Sample terraform code to create Client VPN Endpoint on AWS. A Kitchen test is included to verify that resource is being deployed
 
 ## Prerequisites
 
@@ -62,3 +62,79 @@ terraform apply
 | Name  |	Description 
 | ----- | ----------- 
 | client_vpn_endpoint_id | Client VPN Endpoint id
+
+
+## Run kitchen test using kitchen-terraform plugin to verify that AWS Client VPN Endpoint is being deployed
+
+### on Mac
+
+#### Prerequisites
+
+##### Install rbenv to use ruby version 2.3.1
+
+```
+brew install rbenv
+rbenv install 2.3.1
+rbenv local 2.3.1
+rbenv versions
+```
+
+##### Add the following lines to your ~/.bash_profile:
+
+```
+eval "$(rbenv init -)"
+true
+export PATH="$HOME/.rbenv/bin:$PATH"
+```
+
+##### Reload profile: 
+
+`source ~/.bash_profile`
+
+##### Install bundler
+
+```
+gem install bundler
+bundle install
+```
+
+#### Run the test: 
+
+```
+bundle exec kitchen list
+bundle exec kitchen converge
+bundle exec kitchen verify
+bundle exec kitchen destroy
+```
+
+### on Linux
+
+#### Prerequisites
+
+```
+gem install test-kitchen
+gem install kitchen-inspec
+gem install kitchen-vagrant
+```
+
+#### Run kitchen test
+
+```
+kitchen list
+kitchen converge
+kitchen verify
+kitchen destroy
+```
+
+### Sample output
+
+```
+Target:  local://
+
+  Command: `terraform state list`
+     ✔  stdout should include "client_vpn_endpoint_id"
+     ✔  stderr should include ""
+     ✔  exit_status should eq 0
+
+Test Summary: 3 successful, 0 failures, 0 skipped
+```
