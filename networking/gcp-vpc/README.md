@@ -29,7 +29,7 @@ gcp_project_id = "your-gcp-project-id"
 | ----- | ----------- | ---- |  ------- | --------
 | gcp_credentials_file_path | Locate the GCP credentials .json file. | string  | - | yes
 | gcp_project_id | GCP Project ID. | string  | - | yes
-| gcp_region | Requester AWS secret key | string  | us-east4 | yes
+| gcp_region | GCP region | string  | us-east4 | yes
 | gcp_subnet1_cidr | VPC subnet CIDR block | string  | 10.24.0.0/24 | yes
 
 - Initialize terraform and plan/apply
