@@ -2,7 +2,7 @@
 
 ## High Level Overview
 
-<img src="diagrams/AWS VPC with Public and Private Subnets.png" />
+<img src="diagrams/nomad-multicloud.png" />
 
 ## Prerequisites
 
