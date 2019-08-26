@@ -13,6 +13,27 @@ resource "google_compute_subnetwork" "gcp-vpc-subnet1" {
   region        = var.gcp_region
 }
 
+resource "google_compute_router" "router" {
+  name    = "router"
+  region  = google_compute_subnetwork.gcp-vpc-subnet1.region
+  network = google_compute_network.gcp-vpc-network.self_link
+  bgp {
+    asn = 64514
+  }
+}
+
+resource "google_compute_router_nat" "simple-nat" {
+  name                               = "nat-1"
+  router                             = google_compute_router.router.name
+  region                             = var.gcp_region
+  nat_ip_allocate_option             = "AUTO_ONLY"
+  source_subnetwork_ip_ranges_to_nat = "LIST_OF_SUBNETWORKS"
+  subnetwork {
+    name                    = google_compute_subnetwork.gcp-vpc-subnet1.self_link
+    source_ip_ranges_to_nat = ["ALL_IP_RANGES"]
+  }
+}
+
 # Allow ICMP
 resource "google_compute_firewall" "gcp-allow-icmp" {
   name    = "${google_compute_network.gcp-vpc-network.name}-gcp-allow-icmp"
@@ -43,17 +64,17 @@ resource "google_compute_firewall" "gcp-allow-ssh" {
 }
 
 # Allow TCP traffic from the Internet
-resource "google_compute_firewall" "gcp-allow-internet" {
-  name    = "${google_compute_network.gcp-vpc-network.name}-gcp-allow-internet"
-  network = google_compute_network.gcp-vpc-network.name
+# resource "google_compute_firewall" "gcp-allow-internet" {
+#   name    = "${google_compute_network.gcp-vpc-network.name}-gcp-allow-internet"
+#   network = google_compute_network.gcp-vpc-network.name
 
-  allow {
-    protocol = "tcp"
-    ports    = ["80", "443"]
-  }
+#   allow {
+#     protocol = "tcp"
+#     ports    = ["80", "443"]
+#   }
 
-  source_ranges = [
-    "0.0.0.0/0",
-  ]
-}
+#   source_ranges = [
+#     "0.0.0.0/0",
+#   ]
+# }
 

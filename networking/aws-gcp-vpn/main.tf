@@ -4,18 +4,18 @@ data "terraform_remote_state" "aws_vpc_peering" {
   backend = "local"
 
   config = {
-    path = "../aws-vpc-peering/terraform.tfstate"
+    path = "../aws-vpcs/terraform.tfstate"
   }
 }
 
 // ---------- AWS VPN Connection setup ----------
 
 data "aws_vpc" "selected" {
-  id = data.terraform_remote_state.aws_vpc_peering.outputs.requester_vpc_id
+  id = data.terraform_remote_state.aws_vpc_peering.outputs.accepter_vpc_id
 }
 
 data "aws_subnet_ids" "all" {
-  vpc_id = data.terraform_remote_state.aws_vpc_peering.outputs.requester_vpc_id
+  vpc_id = data.terraform_remote_state.aws_vpc_peering.outputs.accepter_vpc_id
 }
 
 data "aws_subnet" "subnets" {
@@ -26,12 +26,21 @@ data "aws_subnet" "subnets" {
 data "aws_internet_gateway" "default" {
   filter {
     name   = "attachment.vpc-id"
-    values = [data.terraform_remote_state.aws_vpc_peering.outputs.requester_vpc_id]
+    values = [data.terraform_remote_state.aws_vpc_peering.outputs.accepter_vpc_id]
+  }
+}
+
+data "aws_route_table" "custom" {
+  vpc_id = data.terraform_remote_state.aws_vpc_peering.outputs.accepter_vpc_id
+
+  filter {
+    name   = "tag:Name"
+    values = ["custom"]
   }
 }
 
 resource "aws_vpn_gateway" "aws-vpn-gw" {
-  vpc_id = data.terraform_remote_state.aws_vpc_peering.outputs.requester_vpc_id
+  vpc_id = data.terraform_remote_state.aws_vpc_peering.outputs.accepter_vpc_id
 }
 
 resource "aws_customer_gateway" "aws-cgw" {
@@ -44,9 +53,14 @@ resource "aws_customer_gateway" "aws-cgw" {
   }
 }
 
-resource "aws_vpn_gateway_route_propagation" "example" {
+resource "aws_vpn_gateway_route_propagation" "main" {
   vpn_gateway_id = aws_vpn_gateway.aws-vpn-gw.id
   route_table_id = data.aws_vpc.selected.main_route_table_id
+}
+
+resource "aws_vpn_gateway_route_propagation" "custom" {
+  vpn_gateway_id = aws_vpn_gateway.aws-vpn-gw.id
+  route_table_id = data.aws_route_table.custom.route_table_id
 }
 
 resource "aws_vpn_connection" "aws-vpn-connection1" {
@@ -64,7 +78,7 @@ resource "aws_vpn_connection" "aws-vpn-connection1" {
 resource "aws_security_group" "aws-allow-vpn" {
   name        = "aws-allow-vpn"
   description = "Allow all traffic from vpn resources"
-  vpc_id      = data.terraform_remote_state.aws_vpc_peering.outputs.requester_vpc_id
+  vpc_id      = data.terraform_remote_state.aws_vpc_peering.outputs.accepter_vpc_id
 
   ingress {
     from_port   = 0

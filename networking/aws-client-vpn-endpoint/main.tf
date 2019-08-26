@@ -11,7 +11,7 @@ data "terraform_remote_state" "aws_vpc_peering" {
   backend = "local"
 
   config = {
-    path = "../aws-vpc-peering/terraform.tfstate"
+    path = "../aws-vpcs/terraform.tfstate"
   }
 }
 
@@ -56,7 +56,7 @@ resource "aws_ec2_client_vpn_endpoint" "client-vpn-endpoint" {
 
 resource "aws_ec2_client_vpn_network_association" "client-vpn-network-association" {
   client_vpn_endpoint_id = aws_ec2_client_vpn_endpoint.client-vpn-endpoint.id
-  subnet_id              = data.terraform_remote_state.aws_vpc_peering.outputs.requester_subnet_ids[0]
+  subnet_id              = data.terraform_remote_state.aws_vpc_peering.outputs.accepter_subnet_ids[0]
 }
 
 resource "null_resource" "authorize-client-vpn-ingress" {
@@ -69,7 +69,7 @@ resource "null_resource" "authorize-client-vpn-ingress" {
 
 resource "null_resource" "create-client-vpn-route" {
   provisioner "local-exec" {
-    command = "aws --region ${var.aws_region} ec2 create-client-vpn-route --client-vpn-endpoint-id ${aws_ec2_client_vpn_endpoint.client-vpn-endpoint.id} --destination-cidr-block 0.0.0.0/0 --target-vpc-subnet-id ${data.terraform_remote_state.aws_vpc_peering.outputs.requester_subnet_ids[0]} --description Internet-Access"
+    command = "aws --region ${var.aws_region} ec2 create-client-vpn-route --client-vpn-endpoint-id ${aws_ec2_client_vpn_endpoint.client-vpn-endpoint.id} --destination-cidr-block 0.0.0.0/0 --target-vpc-subnet-id ${data.terraform_remote_state.aws_vpc_peering.outputs.accepter_subnet_ids[0]} --description Internet-Access"
   }
 
   depends_on = [aws_ec2_client_vpn_endpoint.client-vpn-endpoint]
