@@ -5,6 +5,22 @@ resource "aws_security_group" "allow_nomad_traffic_sg" {
   description = "Allow traffic needed for Nomad"
   vpc_id      = var.aws_vpc_id
 
+  // Custom ICMP Rule - IPv4 Echo Reply
+  ingress {
+    from_port   = "0"
+    to_port     = "-1"
+    protocol    = "icmp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  // Custom ICMP Rule - IPv4 Echo Request
+  ingress {
+    from_port   = "8"
+    to_port     = "-1"
+    protocol    = "icmp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   // ssh
   ingress {
     from_port   = "22"

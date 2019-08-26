@@ -54,7 +54,7 @@ resource "aws_iam_instance_profile" "nomad" {
 }
 
 // Creates AWS EC2 instances for nomad server/client
-resource "aws_instance" "new_instance" {
+resource "aws_instance" "nomad_instance" {
   count         = var.nomad_instance_count
   ami           = var.ami
   instance_type = var.instance_type
@@ -66,13 +66,16 @@ resource "aws_instance" "new_instance" {
   iam_instance_profile   = aws_iam_instance_profile.nomad.id
   key_name               = aws_key_pair.my_key.id
 
+  associate_public_ip_address = "false"
+
   tags = {
     Name       = "${var.nomad_region}-${var.dc}-${module.random_name.name}-${var.instance_role}-0${count.index + 1}"
     nomad-node = var.instance_role
   }
 
   connection {
-    host        = coalesce(self.public_ip, self.private_ip)
+    #host        = coalesce(self.public_ip, self.private_ip)
+    host        = self.private_ip
     type        = "ssh"
     user        = "ubuntu"
     private_key = file("~/.ssh/id_rsa")

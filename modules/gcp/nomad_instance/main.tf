@@ -23,10 +23,6 @@ resource "google_compute_instance" "nomad_instance" {
 
   network_interface {
     subnetwork = var.gcp-subnet1-name
-
-    access_config {
-      # ephemeral IP
-    }
   }
 
   metadata = {
@@ -43,7 +39,8 @@ resource "google_compute_instance" "nomad_instance" {
 
   connection {
     type     = "ssh"
-    host     = self.network_interface[0].access_config[0].nat_ip
+    #host     = self.network_interface[0].access_config[0].nat_ip
+    host     = self.network_interface.0.network_ip
     user     = var.ssh_user
     private_key = file("~/.ssh/id_rsa")
   }

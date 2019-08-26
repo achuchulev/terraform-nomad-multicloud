@@ -10,7 +10,6 @@ variable "clients_count" {
   default     = "3"
 }
 
-variable "instance_role" {}
 
 // ************** Nomad VARS *************** //
 
@@ -67,8 +66,8 @@ variable "cloudflare_zone" {}
 
 variable "subdomain_name" {}
 
-// ************** AWS VARS **************** //
 
+// ************** AWS VARS **************** //
 
 variable "access_key" {}
 
@@ -84,23 +83,7 @@ variable "region2" {
   default = "us-east-2"
 }
 
-# variable "availability_zone" {
-#   default = "us-east-1b"
-# }
-
-# variable "region2_availability_zone" {
-#   default = "us-east-2c"
-# }
-
 variable "instance_type" {}
-
-# variable "vpc_id" {}
-
-# variable "region2_vpc_id" {}
-
-# variable "subnet_id" {}
-
-# variable "region2_subnet_id" {}
 
 variable "server_ami" {
   default = "ami-0ac8c1373dae0f3e5"
@@ -118,6 +101,7 @@ variable "region2_client_ami" {
   default = "ami-0e431df20c101e6b7"
 }
 
+
 // ************** GCP VARS **************** //
 
 variable "gcp_credentials_file_path" {
@@ -134,12 +118,6 @@ variable "gcp_region" {
   description = "Default to N.Virginia region"
   default     = "us-east4"
 }
-
-# variable "gcp-vpc-network" {
-# }
-
-# variable "gcp-subnet1-name" {
-# }
 
 variable "gcp_instance_type" {
   description = "Machine Type. Correlates to an network egress cap."
