@@ -1,4 +1,4 @@
-# Deploy Nomad multicloud (AWS & GCP) federation cluster with Terraform in different Nomad regions & DCs, secured with mTLS and frontend with nginx reverse proxy. A kitchen test is included
+# Deploy Nomad multicloud (AWS & GCP) federation cluster with Terraform in different Nomad regions & DCs, secured with mTLS and frontend with nginx reverse proxy
 
 ## High Level Overview
 
@@ -22,6 +22,7 @@
 
 ```
 // ******** NOMAD GLOBAL VARS ******** //
+
 nomad_region_aws     = "aws"
 nomad_region_gcp     = "gcp"
 authoritative_region = "aws"
@@ -30,11 +31,11 @@ aws_subdomain_name   = "nomad-ui-aws"
 
 // ************  AWS VARS ************ //
 
-access_key           = "aws_access_key"
-secret_key           = "aws_secret_key"
-aws_region           = "aws_region"
-vpc_name             = "aws_vpc_name_tag"
-region               = "aws_vpc_region_tag"
+access_key = "aws_access_key"
+secret_key = "aws_secret_key"
+aws_region = "aws_region"
+vpc_name   = "aws_vpc_name_tag"
+region     = "aws_vpc_region_tag"
 
 // ************ GCP VARS ************ //
 
@@ -44,9 +45,9 @@ gcp_region                = "gcp_region"
 
 // ********* CLOUDFLARE VARS ********* //
 
-cloudflare_email     = "me@example.com"
-cloudflare_token     = "your_cloudflare_token"
-cloudflare_zone      = "example.com"
+cloudflare_email = "me@example.com"
+cloudflare_token = "your_cloudflare_token"
+cloudflare_zone  = "example.com"
 
 ```
 
@@ -132,71 +133,4 @@ connection is secured and SSL certificate is valid
 
 ```
 $ nomad job run [options] <job file>
-```
-
-## Run kitchen test using kitchen-terraform plugin to verify that expected resources are being deployed   
-
-### on Mac
-
-#### Prerequisites
-
-##### Install rbenv to use ruby version 2.3.1
-
-```
-brew install rbenv
-rbenv install 2.3.1
-rbenv local 2.3.1
-rbenv versions
-```
-
-##### Add the following lines to your ~/.bash_profile:
-
-```
-eval "$(rbenv init -)"
-true
-export PATH="$HOME/.rbenv/bin:$PATH"
-```
-
-##### Reload profile: 
-
-`source ~/.bash_profile`
-
-##### Install bundler
-
-```
-gem install bundler
-bundle install
-```
-
-#### Run the test: 
-
-```
-bundle exec kitchen list
-bundle exec kitchen converge
-bundle exec kitchen verify
-bundle exec kitchen destroy
-```
-
-### on Linux
-
-#### Prerequisites
-
-```
-gem install test-kitchen
-gem install kitchen-inspec
-gem install kitchen-vagrant
-```
-
-#### Run kitchen test 
-
-```
-kitchen list
-kitchen converge
-kitchen verify
-kitchen destroy
-```
-
-### Sample output
-
-```
 ```
