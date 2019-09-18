@@ -1,82 +1,68 @@
 // AWS Part outs
 
-## Outputs  AWS Region A
-# output "aws-region1-nomad_server_public_ip" {
-#   value = module.aws-region1-nomad_server.instance_public_ip
-# }
+# NW
 
-output "aws-region1-nomad_server_private_ip" {
-  value = module.aws-region1-nomad_server.private_ips
+output "aws_vpc_id" {
+  value = module.new_aws_vpc.vpc_id
 }
 
-output "aws-region1-nomad_server_tags" {
-  value = module.aws-region1-nomad_server.instance_tags
-}
-
-# output "aws-region1-nomad_client_public_ip" {
-#   value = module.aws-region1-nomad_client.instance_public_ip
-# }
-
-output "aws-region1-nomad_client_private_ip" {
-  value = module.aws-region1-nomad_client.private_ips
-}
-
-output "aws-region1-nomad_server_private_ips" {
-  value = module.aws-region1-nomad_server.private_ips
-}
-
-output "aws-region1-nomad_client_tags" {
-  value = module.aws-region1-nomad_client.instance_tags
-}
-
-## Outputs AWS Region B
-
-# output "aws-region2-nomad_server_public_ip" {
-#   value = module.aws-region2-nomad_server.instance_public_ip
-# }
-
-output "aws-region2-nomad_server_private_ip" {
-  value = module.aws-region2-nomad_server.private_ips
-}
-
-output "aws-region2-nomad_server_tags" {
-  value = module.aws-region2-nomad_server.instance_tags
-}
-
-# output "aws-region2-nomad_client_public_ip" {
-#   value = module.aws-region2-nomad_client.instance_public_ip
-# }
-
-output "aws-region2-nomad_client_private_ip" {
-  value = module.aws-region2-nomad_client.private_ips
-}
-
-output "aws-region2-nomad_client_tags" {
-  value = module.aws-region2-nomad_client.instance_tags
-}
-
-## Output frontend
-
-output "frontend_server_public_ip" {
-  value = module.nomad_frontend.public_ip
+output "aws_vpc_name" {
+  value = module.new_aws_vpc.vpc_name
 }
 
 
+output "aws_subnet_ids" {
+  value = module.new_aws_vpc.subnet_ids
+}
+
+output "aws_azs" {
+  value = module.new_aws_vpc.azs
+}
+
+# Nomad
+
+output "aws_server_private_ips" {
+  value = module.nomad_cluster_on_aws.server_private_ips
+}
+
+output "aws_client_private_ips" {
+  value = module.nomad_cluster_on_aws.client_private_ips
+}
+
+output "aws_frontend_public_ip" {
+  value = module.nomad_cluster_on_aws.frontend_public_ip
+}
+
+output "AWS_Nomad_UI_URL" {
+  value = module.nomad_cluster_on_aws.ui_url
+}
 
 // GCP Outs
 
-# output "gcp-region-nomad_server_public_ip" {
-#   value = module.gcp-nomad_server.instance_public_ip
-# }
+# NW
 
-output "gcp-region-nomad_server_private_ip" {
-  value = module.gcp-nomad_server.instance_private_ip
+output "gcp_vpc_network_id" {
+  value = module.new_gcp_vpc.gcp_vpc_network_id
 }
 
-# output "gcp-region-nomad_client_public_ip" {
-#   value = module.gcp-nomad_client.instance_public_ip
-# }
+output "gcp_vpc_network_subnet_id" {
+  value = module.new_gcp_vpc.gcp_vpc_network_subnet_id
+}
 
-output "gcp-region-nomad_client_private_ip" {
-  value = module.gcp-nomad_client.instance_private_ip
+# Nomad
+
+output "gcp_server_private_ips" {
+  value = module.nomad_cluster_on_gcp.server_private_ips
+}
+
+output "gcp_client_private_ips" {
+  value = module.nomad_cluster_on_gcp.client_private_ips
+}
+
+output "gcp_frontend_public_ip" {
+  value = module.nomad_cluster_on_gcp.frontend_public_ip
+}
+
+output "gcp_Nomad_UI_URL" {
+  value = module.nomad_cluster_on_gcp.ui_url
 }

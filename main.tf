@@ -1,228 +1,138 @@
 // ************* GLOBAL Part ************* //
 
+# generate a new private CA
 resource "null_resource" "generate_self_ca" {
   provisioner "local-exec" {
-    # script called with private_ips of nomad backend servers
-    command = "${path.root}/scripts/gen_self_ca.sh ${var.nomad_aws_region1} ${var.nomad_aws_region2} ${var.nomad_gcp_region}"
+    command = "${path.root}/scripts/gen_self_ca.sh .terraform/modules/nomad_cluster_on_aws/ca_certs .terraform/modules/nomad_cluster_on_gcp/ca_certs"
   }
 }
 
+# generate a new secure gossip encryption key
 resource "random_id" "server_gossip" {
   byte_length = 16
 }
 
-// ************* Get output data from "aws-vpc-peering" module tfstate ************* //
+// ************* Networking ************* //
 
-data "terraform_remote_state" "aws_vpcs" {
-  backend = "local"
+# Module that creates new VPC with one Public and one or more Private subnets on AWS
+module "new_aws_vpc" {
+  source = "git@github.com:achuchulev/terraform-aws-vpc-natgw.git"
 
-  config = {
-    path = "./networking/aws-vpcs/terraform.tfstate"
+  aws_access_key = var.access_key
+  aws_secret_key = var.secret_key
+  aws_region     = var.aws_region
+
+  vpc_cidr_block         = var.vpc_cidr_block
+  vpc_subnet_cidr_blocks = var.vpc_subnet_cidr_blocks
+
+  vpc_tags = {
+    Name = var.vpc_name
+    Side = var.region
   }
 }
 
-// ************* Get output data from "gcp-vpc" module tfstate ************* //
+# Module that creates new VPC on GCP
+module "new_gcp_vpc" {
+  source = "git@github.com:achuchulev/terraform-gcp-vpc.git"
 
-data "terraform_remote_state" "gcp_vpc" {
-  backend = "local"
-
-  config = {
-    path = "./networking/gcp-vpc/terraform.tfstate"
-  }
-}
-
-// ************* AWS Part ************* //
-
-// Module to create needed security groups for nomad
-
-module "nomad_security_groups_region1" {
-  source     = "./modules/security_groups"
-  access_key = var.access_key
-  secret_key = var.secret_key
-  region     = var.region
-  aws_vpc_id = data.terraform_remote_state.aws_vpcs.outputs.accepter_vpc_id
-}
-
-module "nomad_security_groups_region2" {
-  source     = "./modules/security_groups"
-  access_key = var.access_key
-  secret_key = var.secret_key
-  region     = var.region2
-  aws_vpc_id = data.terraform_remote_state.aws_vpcs.outputs.requester_vpc_id
-}
-
-# Module that creates Nomad server instances in AWS region A, Nomad region A and Nomad dc1
-module "aws-region1-nomad_server" {
-  source = "./modules/aws/nomad_instance"
-
-  access_key           = var.access_key
-  secret_key           = var.secret_key
-  region               = var.region
-  nomad_instance_count = var.servers_count
-  aws_vpc_id           = data.terraform_remote_state.aws_vpcs.outputs.accepter_vpc_id
-  availability_zone    = data.terraform_remote_state.aws_vpcs.outputs.accepter_azs[1]
-  subnet_id            = data.terraform_remote_state.aws_vpcs.outputs.accepter_subnet_ids[1]
-  dc                   = var.nomad_aws_region1_dc
-  ami                  = var.server_ami
-  instance_type        = var.instance_type
-  public_key           = var.public_key
-  sg_id                = module.nomad_security_groups_region1.security_group_id
-  nomad_region         = var.nomad_aws_region1
-  authoritative_region = var.authoritative_region
-  domain_name          = var.subdomain_name
-  zone_name            = var.cloudflare_zone
-  secure_gossip        = random_id.server_gossip.b64_std
-}
-
-# Module that creates Nomad server instances in AWS region B, Nomad region B and Nomad dc1
-module "aws-region2-nomad_server" {
-  source = "./modules/aws/nomad_instance"
-
-  region               = var.region2
-  aws_vpc_id           = data.terraform_remote_state.aws_vpcs.outputs.requester_vpc_id
-  availability_zone    = data.terraform_remote_state.aws_vpcs.outputs.requester_azs[1]
-  subnet_id            = data.terraform_remote_state.aws_vpcs.outputs.requester_subnet_ids[1]
-  nomad_region         = var.nomad_aws_region2
-  ami                  = var.region2_server_ami
-  dc                   = var.nomad_aws_region2_dc
-  authoritative_region = var.authoritative_region
-  nomad_instance_count = var.servers_count
-  access_key           = var.access_key
-  secret_key           = var.secret_key
-  instance_type        = var.instance_type
-  public_key           = var.public_key
-  sg_id                = module.nomad_security_groups_region2.security_group_id
-  domain_name          = var.subdomain_name
-  zone_name            = var.cloudflare_zone
-  secure_gossip        = random_id.server_gossip.b64_std
-}
-
-# Module that creates Nomad client instances in AWS region A, Nomad region A and Nomad dc1
-module "aws-region1-nomad_client" {
-  source = "./modules/aws/nomad_instance"
-
-  region               = var.region
-  nomad_region         = var.nomad_aws_region1
-  aws_vpc_id           = data.terraform_remote_state.aws_vpcs.outputs.accepter_vpc_id
-  availability_zone    = data.terraform_remote_state.aws_vpcs.outputs.accepter_azs[1]
-  subnet_id            = data.terraform_remote_state.aws_vpcs.outputs.accepter_subnet_ids[1]
-  dc                   = var.nomad_aws_region1_dc
-  instance_role        = "client"
-  ami                  = var.client_ami
-  nomad_instance_count = var.clients_count
-  access_key           = var.access_key
-  secret_key           = var.secret_key
-  instance_type        = var.instance_type
-  public_key           = var.public_key
-  sg_id                = module.nomad_security_groups_region1.security_group_id
-  domain_name          = var.subdomain_name
-  zone_name            = var.cloudflare_zone
-}
-
-# Module that creates Nomad client instances in AWS region B, Nomad region B and Nomad dc1
-module "aws-region2-nomad_client" {
-  source = "./modules/aws/nomad_instance"
-
-  region               = var.region2
-  aws_vpc_id           = data.terraform_remote_state.aws_vpcs.outputs.requester_vpc_id
-  availability_zone    = data.terraform_remote_state.aws_vpcs.outputs.requester_azs[1]
-  subnet_id            = data.terraform_remote_state.aws_vpcs.outputs.requester_subnet_ids[1]
-  dc                   = var.nomad_aws_region2_dc
-  ami                  = var.region2_client_ami
-  nomad_region         = var.nomad_aws_region2
-  instance_role        = "client"
-  nomad_instance_count = var.clients_count
-  access_key           = var.access_key
-  secret_key           = var.secret_key
-  instance_type        = var.instance_type
-  sg_id                = module.nomad_security_groups_region2.security_group_id
-  domain_name          = var.subdomain_name
-  public_key           = var.public_key
-  zone_name            = var.cloudflare_zone
-}
-
-# Module that creates Nomad frontend instance
-module "nomad_frontend" {
-  source = "./modules/nomad_frontend"
-
-  region              = var.region
-  aws_vpc_id          = data.terraform_remote_state.aws_vpcs.outputs.accepter_vpc_id
-  availability_zone   = data.terraform_remote_state.aws_vpcs.outputs.accepter_azs[0]
-  subnet_id           = data.terraform_remote_state.aws_vpcs.outputs.accepter_subnet_ids[0]
-  frontend_region     = var.nomad_aws_region1
-  access_key          = var.access_key
-  secret_key          = var.secret_key
-  instance_type       = var.instance_type
-  public_key          = var.public_key
-  backend_private_ips = module.aws-region1-nomad_server.instance_private_ip
-  cloudflare_token    = var.cloudflare_token
-  cloudflare_zone     = var.cloudflare_zone
-  subdomain_name      = var.subdomain_name
-  cloudflare_email    = var.cloudflare_email
-  nomad_region        = var.nomad_aws_region1
-}
-
-// ************* GCP Part ************* //
-
-# Module that creates Nomad server instances
-module "gcp-nomad_server" {
-  source = "./modules/gcp/nomad_instance"
-
-  gcp_project_id            = var.gcp_project_id
   gcp_credentials_file_path = var.gcp_credentials_file_path
+  gcp_project_id            = var.gcp_project_id
   gcp_region                = var.gcp_region
-  nomad_instance_count      = var.servers_count
-  gcp_disk_image            = var.gcp_disk_image
-  dc                        = var.nomad_gcp_region_dc
-  nomad_region              = var.nomad_gcp_region
-  authoritative_region      = var.authoritative_region
-  gcp_instance_type         = var.gcp_instance_type
-  gcp-vpc-network           = data.terraform_remote_state.gcp_vpc.outputs.gcp_vpc_network_id
-  gcp-subnet1-name          = data.terraform_remote_state.gcp_vpc.outputs.gcp_vpc_network_subnet_id
-  domain_name               = var.subdomain_name
-  zone_name                 = var.cloudflare_zone
+  gcp_subnet1_cidr          = var.gcp_subnet1_cidr
+}
+
+# Module that creates new VPN between AWS <-> GCP
+
+module "aws-gcp-vpn" {
+  source = "git@github.com:achuchulev/terraform-aws-gcp-vpn.git"
+
+  gcp_credentials_file_path = var.gcp_credentials_file_path
+  gcp_project_id            = var.gcp_project_id
+  gcp-network-name          = module.new_gcp_vpc.gcp_vpc_network_id
+  gcp-subnet1-name          = module.new_gcp_vpc.gcp_vpc_network_subnet_id
+  gcp_region                = var.gcp_region
+  access_key                = var.access_key
+  secret_key                = var.secret_key
+  aws_region                = var.aws_region
+  aws-vpc-id                = module.new_aws_vpc.vpc_id
+  aws_subnet_cidrs          = var.vpc_subnet_cidr_blocks
+
+}
+
+
+module "aws-client-vpn" {
+  source = "git@github.com:achuchulev/terraform-aws-client-vpn-endpoint.git"
+
+  aws_access_key     = var.access_key
+  aws_secret_key     = var.secret_key
+  aws_region         = var.aws_region
+  subnet_id = module.new_aws_vpc.subnet_ids[0]
+  domain         = "ntry.site"
+}
+
+
+// ************* NOMAD ************* //
+
+# Module that creates Nomad cluster (servers/clients/frontend) on AWS
+
+module "nomad_cluster_on_aws" {
+  source = "git@github.com:achuchulev/terraform-aws-nomad.git"
+
+  access_key                 = var.access_key
+  secret_key                 = var.secret_key
+  aws_vpc_id                 = module.new_aws_vpc.vpc_id
+  frontend_subnet_id         = module.new_aws_vpc.subnet_ids[0]
+  server_subnet_id           = module.new_aws_vpc.subnet_ids[1]
+  client_subnet_id           = module.new_aws_vpc.subnet_ids[1]
+  secure_gossip              = random_id.server_gossip.b64_std
+  cloudflare_email           = var.cloudflare_email
+  cloudflare_token           = var.cloudflare_token
+  cloudflare_zone            = var.cloudflare_zone
+  subdomain_name             = var.aws_subdomain_name
+  private_subnet_with_nat_gw = "true"
+  dc                         = var.aws_region
+  nomad_region               = var.nomad_region_aws
+  authoritative_region       = var.authoritative_region
+}
+
+# Module that creates Nomad cluster (servers/clients/frontend) on GCP
+
+module "nomad_cluster_on_gcp" {
+  source = "git@github.com:achuchulev/terraform-gcp-nomad.git"
+
+  gcp_credentials_file_path = var.gcp_credentials_file_path
+  gcp_project_id            = var.gcp_project_id
+  gcp_vpc_network           = module.new_gcp_vpc.gcp_vpc_network_id
+  gcp_subnet_name           = module.new_gcp_vpc.gcp_vpc_network_subnet_id
   secure_gossip             = random_id.server_gossip.b64_std
-}
-
-# Module that creates Nomad client instances
-module "gcp-nomad_client" {
-  source = "./modules/gcp/nomad_instance"
-
-  gcp_project_id            = var.gcp_project_id
-  gcp_credentials_file_path = var.gcp_credentials_file_path
-  gcp_region                = var.gcp_region
-  dc                        = var.nomad_gcp_region_dc
-  nomad_region              = var.nomad_gcp_region
-  instance_role             = "client"
-  nomad_instance_count      = var.clients_count
-  gcp_disk_image            = var.gcp_client_disk_image
-  gcp_instance_type         = var.gcp_instance_type
-  gcp-vpc-network           = data.terraform_remote_state.gcp_vpc.outputs.gcp_vpc_network_id
-  gcp-subnet1-name          = data.terraform_remote_state.gcp_vpc.outputs.gcp_vpc_network_subnet_id
-  domain_name               = var.subdomain_name
-  zone_name                 = var.cloudflare_zone
+  cloudflare_email          = var.cloudflare_email
+  cloudflare_token          = var.cloudflare_token
+  cloudflare_zone           = var.cloudflare_zone
+  subdomain_name            = var.gcp_subdomain_name
+  dc                        = var.gcp_region
+  nomad_region              = var.nomad_region_gcp
+  authoritative_region      = var.authoritative_region
 }
 
 // ************* NOMAD Cluster Federetaion ************* //
 
 resource "null_resource" "nomad_federation_aws" {
   depends_on = [
-    module.aws-region1-nomad_server,
-    module.aws-region2-nomad_server,
-    module.gcp-nomad_server,
-    module.nomad_frontend,
+    module.nomad_cluster_on_aws,
+    module.nomad_cluster_on_gcp,
+    module.aws-gcp-vpn,
+    module.aws-client-vpn
   ]
 
   provisioner "remote-exec" {
     # create nomad multi-region federation
     inline = [
-      "export NOMAD_ADDR=https://${var.subdomain_name}.${var.cloudflare_zone}",
-      "nomad server join '${module.aws-region2-nomad_server.private_ips[0]}'",
-      "nomad server join '${module.gcp-nomad_server.instance_private_ip[0]}'",
+      "export NOMAD_ADDR=${module.nomad_cluster_on_aws.ui_url}",
+      "nomad server join '${module.nomad_cluster_on_gcp.server_private_ips[0]}'",
     ]
 
     connection {
-      host        = module.aws-region1-nomad_server.private_ips[0]
+      host        = module.nomad_cluster_on_aws.server_private_ips[0]
       type        = "ssh"
       user        = "ubuntu"
       private_key = file("~/.ssh/id_rsa")
