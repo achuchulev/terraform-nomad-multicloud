@@ -50,13 +50,13 @@ cloudflare_zone      = "example.com"
 
 ```
 
-- For all available input options refer to
-  - [AWS VPC Module](https://github.com/achuchulev/terraform-aws-vpc-natgw)
-  - [GCP VPC Module](https://github.com/achuchulev/terraform-gcp-vpc)
-  - [AWS<->GCP VPN Module](https://github.com/achuchulev/terraform-aws-gcp-vpn)
-  - [AWS Client VPN Module](https://github.com/achuchulev/terraform-aws-client-vpn-endpoint)
-  - [AWS NOMAD Cluster Module](https://github.com/achuchulev/terraform-aws-nomad)
-  - [GCP NOMAD Cluster Module](https://github.com/achuchulev/terraform-gcp-nomad)
+- For more details about all available input options read the readmes of module for
+  - [AWS VPC](https://github.com/achuchulev/terraform-aws-vpc-natgw/blob/master/README.md)
+  - [GCP VPC](https://github.com/achuchulev/terraform-gcp-vpc/blob/master/README.md)
+  - [AWS<->GCP VPN](https://github.com/achuchulev/terraform-aws-gcp-vpn/blob/master/README.md)
+  - [AWS Client VPN](https://github.com/achuchulev/terraform-aws-client-vpn-endpoint/blob/master/README.md)
+  - [AWS NOMAD Cluster](https://github.com/achuchulev/terraform-aws-nomad/blob/master/README.md)
+  - [GCP NOMAD Cluster](https://github.com/achuchulev/terraform-gcp-nomad/blob/master/README.md)
 
 #### Initialize terraform
 
