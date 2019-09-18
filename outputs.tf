@@ -15,10 +15,6 @@ output "aws_subnet_ids" {
   value = module.new_aws_vpc.subnet_ids
 }
 
-output "aws_azs" {
-  value = module.new_aws_vpc.azs
-}
-
 # Nomad
 
 output "aws_server_private_ips" {
@@ -65,4 +61,10 @@ output "gcp_frontend_public_ip" {
 
 output "gcp_Nomad_UI_URL" {
   value = module.nomad_cluster_on_gcp.ui_url
+}
+
+# Client VPN
+
+output "client_vpn_id" {
+  value = module.aws-client-vpn.client_vpn_endpoint_id
 }

@@ -16,11 +16,20 @@ verifier:
     - name: basic
       backend: local
       attrs_outputs:
-        client_pub_ips:  nomad_client_public_ip
-        client_tags:     nomad_client_tags
-        server_pub_ips:  nomad_server_public_ip
-        server_tags:     nomad_server_tags
-        frontend_pub_ip: frontend_server_public_ip
+        aws_vpc_id: aws_vpc_id
+        aws_vpc_name: aws_vpc_name
+        aws_subnet_ids: aws_subnet_ids
+        aws_server_private_ips: aws_server_private_ips
+        aws_client_private_ips: aws_client_private_ips
+        aws_frontend_public_ip: aws_frontend_public_ip
+        AWS_Nomad_UI_URL: AWS_Nomad_UI_URL
+        gcp_vpc_network_id: gcp_vpc_network_id
+        gcp_vpc_network_subnet_id: gcp_vpc_network_subnet_id
+        gcp_server_private_ips: gcp_server_private_ips
+        gcp_client_private_ips: gcp_client_private_ips
+        gcp_frontend_public_ip: gcp_frontend_public_ip
+        gcp_Nomad_UI_URL: gcp_Nomad_UI_URL
+        client_vpn_id: client_vpn_id
 
 suites:
   - name: default
