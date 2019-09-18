@@ -1,4 +1,4 @@
-# Terraform configuration to deploy Nomad multicloud (AWS & GCP) federation cluster in different Nomad regions & DCs, secured with mTLS and frontend with nginx reverse proxy. A kitchen test is included
+# Deploy Nomad multicloud (AWS & GCP) federation cluster with Terraform in different Nomad regions & DCs, secured with mTLS and frontend with nginx reverse proxy. A kitchen test is included
 
 ## High Level Overview
 
