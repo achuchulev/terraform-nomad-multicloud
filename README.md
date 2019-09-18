@@ -2,7 +2,7 @@
 
 ## High Level Overview
 
-<img src="diagrams/nomad-multicloud.png" />
+<img src="diagrams/multicloud.png" />
 
 ## Prerequisites
 
