@@ -96,9 +96,12 @@ terraform apply
   - configure each of the frontend servers as a reverse proxy with nginx
   - automatically enable HTTPS for Nomad frontend with EFF's Certbot, deploying Let's Encrypt certificate
   - check for certificate expiration and automatically renew Let’s Encrypt certificate
-```
-Note: In order to make Nomad cluster federation between the two clusters, you should first connect to your cloud infrastructure on AWS using the Client VPN, then set "make_federation" variable to "true" and apply.```
   - create Nomad cluster federation between the two clouds
+  
+```
+Note: Before you be able to make Nomad cluster federation between the two clusters, you should first connect to your AWS infrastructure importing file "client-config.ovpn" into your favourite VPN client, then set "make_federation" variable to "true" and apply.
+```
+  
   
 ## To do
 
