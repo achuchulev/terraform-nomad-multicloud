@@ -15,14 +15,14 @@ variable "cloudflare_token" {}
 variable "cloudflare_zone" {}
 variable "aws_subdomain_name" {}
 
-variable "vpc_name" {
+variable "vpc_tag_name" {
   description = "Set a VPC Name tag"
-  default     = ""
+  default     = "nomad-network"
 }
 
-variable "region" {
+variable "vpc_tag_side" {
   description = "Set a VPC Side tag"
-  default     = ""
+  default     = "accepter"
 }
 
 variable "vpc_cidr_block" {
@@ -51,4 +51,9 @@ variable "nomad_region_gcp" {
 
 variable "authoritative_region" {
   default = "aws"
+}
+
+variable "make_federation" {
+  description = "When set to true will make a Nomad cluster federation"
+  default     = "false"
 }

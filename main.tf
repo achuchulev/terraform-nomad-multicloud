@@ -26,8 +26,8 @@ module "new_aws_vpc" {
   vpc_subnet_cidr_blocks = var.vpc_subnet_cidr_blocks
 
   vpc_tags = {
-    Name = var.vpc_name
-    Side = var.region
+    Name = var.vpc_tag_name
+    Side = var.vpc_tag_side
   }
 }
 
@@ -48,25 +48,24 @@ module "aws-gcp-vpn" {
 
   gcp_credentials_file_path = var.gcp_credentials_file_path
   gcp_project_id            = var.gcp_project_id
-  gcp-network-name          = module.new_gcp_vpc.gcp_vpc_network_id
-  gcp-subnet1-name          = module.new_gcp_vpc.gcp_vpc_network_subnet_id
+  gcp_network_name          = module.new_gcp_vpc.gcp_vpc_network_id
+  gcp_subnet_name           = module.new_gcp_vpc.gcp_vpc_network_subnet_id
   gcp_region                = var.gcp_region
   access_key                = var.access_key
   secret_key                = var.secret_key
   aws_region                = var.aws_region
-  aws-vpc-id                = module.new_aws_vpc.vpc_id
+  aws_vpc_id                = module.new_aws_vpc.vpc_id
   aws_subnet_cidrs          = var.vpc_subnet_cidr_blocks
-
 }
 
 
 module "aws-client-vpn" {
   source = "git@github.com:achuchulev/terraform-aws-client-vpn-endpoint.git"
 
-  aws_access_key     = var.access_key
-  aws_secret_key     = var.secret_key
-  aws_region         = var.aws_region
-  subnet_id = module.new_aws_vpc.subnet_ids[0]
+  aws_access_key = var.access_key
+  aws_secret_key = var.secret_key
+  aws_region     = var.aws_region
+  subnet_id      = module.new_aws_vpc.subnet_ids[0]
   domain         = "ntry.site"
 }
 
@@ -117,6 +116,7 @@ module "nomad_cluster_on_gcp" {
 // ************* NOMAD Cluster Federetaion ************* //
 
 resource "null_resource" "nomad_federation_aws" {
+  count = var.make_federation == "true" ? 1 : 0
   depends_on = [
     module.nomad_cluster_on_aws,
     module.nomad_cluster_on_gcp,
