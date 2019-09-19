@@ -28,6 +28,7 @@ nomad_region_gcp     = "gcp"
 authoritative_region = "aws"
 gcp_subdomain_name   = "nomad-ui-gcp"
 aws_subdomain_name   = "nomad-ui-aws"
+make_federation      = "false"
 
 // ************  AWS VARS ************ //
 
@@ -99,10 +100,9 @@ terraform apply
   - create Nomad cluster federation between the two clouds
   
 ```
-Note: Before you be able to make Nomad cluster federation between the two clusters, you should first connect to your AWS infrastructure importing file "client-config.ovpn" into your favourite VPN client, then set "make_federation" variable to "true" and apply.
+Note: Before making Nomad cluster federation, you must connect to your AWS infrastructure first importing the "client-config.ovpn" file (created in the root directory) into your favourite VPN client, then set "make_federation" variable to "true" and apply.
 ```
-  
-  
+
 ## To do
 
  - configure Nomad frontend with LB
