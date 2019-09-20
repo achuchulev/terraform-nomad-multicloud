@@ -66,5 +66,5 @@ output "gcp_Nomad_UI_URL" {
 # Client VPN
 
 output "client_vpn_id" {
-  value = module.aws-client-vpn.client_vpn_endpoint_id
+  value = module.aws_client_vpn.client_vpn_endpoint_id
 }

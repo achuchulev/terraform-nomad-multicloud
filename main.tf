@@ -43,7 +43,7 @@ module "new_gcp_vpc" {
 
 # Module that creates new VPN between AWS <-> GCP
 
-module "aws-gcp-vpn" {
+module "aws_gcp_vpn" {
   source = "git@github.com:achuchulev/terraform-aws-gcp-vpn.git"
 
   gcp_credentials_file_path = var.gcp_credentials_file_path
@@ -59,7 +59,7 @@ module "aws-gcp-vpn" {
 }
 
 
-module "aws-client-vpn" {
+module "aws_client_vpn" {
   source = "git@github.com:achuchulev/terraform-aws-client-vpn-endpoint.git"
 
   aws_access_key = var.access_key
@@ -120,8 +120,8 @@ resource "null_resource" "nomad_federation_aws" {
   depends_on = [
     module.nomad_cluster_on_aws,
     module.nomad_cluster_on_gcp,
-    module.aws-gcp-vpn,
-    module.aws-client-vpn
+    module.aws_gcp_vpn,
+    module.aws_client_vpn
   ]
 
   provisioner "remote-exec" {
