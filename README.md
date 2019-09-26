@@ -32,11 +32,14 @@ make_federation      = "false"
 
 // ************  AWS VARS ************ //
 
-access_key = "aws_access_key"
-secret_key = "aws_secret_key"
-aws_region = "aws_region"
-vpc_name   = "aws_vpc_name_tag"
-region     = "aws_vpc_region_tag"
+access_key       = "aws_access_key"
+secret_key       = "aws_secret_key"
+aws_region       = "aws_region"
+vpc_name         = "aws_vpc_name_tag"
+region           = "aws_vpc_region_tag"
+ami_nomad_server = "server-ami-id"
+ami_nomad_client = "client-ami-id"
+ami_frontend     = "frontend-ami-id"
 
 // ************ GCP VARS ************ //
 
@@ -97,11 +100,7 @@ terraform apply
   - configure each of the frontend servers as a reverse proxy with nginx
   - automatically enable HTTPS for Nomad frontend with EFF's Certbot, deploying Let's Encrypt certificate
   - check for certificate expiration and automatically renew Let’s Encrypt certificate
-  - create Nomad cluster federation between the two clouds
-  
-```
-Note: Before making Nomad cluster federation, you must connect to your AWS infrastructure first importing the "client-config.ovpn" file (created in the root directory) into your favourite VPN client, then set "make_federation" variable to "true" and apply.
-```
+  - create Nomad cluster federation between the clusters on GCP && AWS clouds
 
 ## To do
 
@@ -136,6 +135,11 @@ connection is secured and SSL certificate is valid
 
 #### via CLI
 
+- Import vpn file `client-config.ovpn` into your preffered vpn client and connect.
+- ssh to some of the nomad servers
+- run a job
+
 ```
+$ ssh ubuntu@nomad.server.ip
 $ nomad job run [options] <job file>
 ```
