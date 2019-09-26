@@ -41,6 +41,10 @@ variable "gcp_subnet1_cidr" {
   default     = "10.200.0.0/24"
 }
 
+variable "ami_nomad_server" {}
+variable "ami_nomad_client" {}
+variable "ami_frontend" {}
+
 variable "nomad_region_aws" {
   default = "aws"
 }
@@ -51,9 +55,4 @@ variable "nomad_region_gcp" {
 
 variable "authoritative_region" {
   default = "aws"
-}
-
-variable "make_federation" {
-  description = "When set to true will make a Nomad cluster federation"
-  default     = "false"
 }
