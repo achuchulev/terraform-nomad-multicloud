@@ -79,11 +79,15 @@ module "nomad_cluster_on_aws" {
 
   access_key                 = var.access_key
   secret_key                 = var.secret_key
+  region                     = var.aws_region
   aws_vpc_id                 = module.new_aws_vpc.vpc_id
   frontend_subnet_id         = module.new_aws_vpc.subnet_ids[0]
   server_subnet_id           = module.new_aws_vpc.subnet_ids[1]
   client_subnet_id           = module.new_aws_vpc.subnet_ids[1]
   secure_gossip              = random_id.server_gossip.b64_std
+  ami_nomad_server           = var.ami_nomad_server
+  ami_nomad_client           = var.ami_nomad_client
+  ami_frontend               = var.ami_frontend
   cloudflare_email           = var.cloudflare_email
   cloudflare_token           = var.cloudflare_token
   cloudflare_zone            = var.cloudflare_zone
@@ -115,27 +119,15 @@ module "nomad_cluster_on_gcp" {
 
 // ************* NOMAD Cluster Federetaion ************* //
 
-resource "null_resource" "nomad_federation_aws" {
-  count = var.make_federation == "true" ? 1 : 0
+resource "null_resource" "nomad_federation" {
+  #count = var.make_federation == "true" ? 1 : 0
   depends_on = [
     module.nomad_cluster_on_aws,
     module.nomad_cluster_on_gcp,
-    module.aws_gcp_vpn,
-    module.aws_client_vpn
+    module.aws_gcp_vpn
   ]
 
-  provisioner "remote-exec" {
-    # create nomad multi-region federation
-    inline = [
-      "export NOMAD_ADDR=${module.nomad_cluster_on_aws.ui_url}",
-      "nomad server join '${module.nomad_cluster_on_gcp.server_private_ips[0]}'",
-    ]
-
-    connection {
-      host        = module.nomad_cluster_on_aws.server_private_ips[0]
-      type        = "ssh"
-      user        = "ubuntu"
-      private_key = file("~/.ssh/id_rsa")
-    }
+  provisioner "local-exec" {
+    command = "${path.root}/scripts/nomad_federation.sh ${module.nomad_cluster_on_aws.ui_url} ${module.nomad_cluster_on_gcp.server_private_ips[0]}"
   }
 }
