@@ -28,7 +28,6 @@ nomad_region_gcp     = "gcp"
 authoritative_region = "aws"
 gcp_subdomain_name   = "nomad-ui-gcp"
 aws_subdomain_name   = "nomad-ui-aws"
-make_federation      = "false"
 
 // ************  AWS VARS ************ //
 
