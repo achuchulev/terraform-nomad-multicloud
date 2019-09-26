@@ -66,7 +66,7 @@ module "aws_client_vpn" {
   aws_secret_key = var.secret_key
   aws_region     = var.aws_region
   subnet_id      = module.new_aws_vpc.subnet_ids[0]
-  domain         = "ntry.site"
+  domain         = var.cloudflare_zone
 }
 
 
